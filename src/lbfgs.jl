@@ -60,7 +60,7 @@ Construct an LBFGS object with the specified parameters.
 LBFGS(m::Int = 8; maxiter = typemax(Int), gradtol::Real = 1e-8, acceptfirst::Bool = true,
         verbosity::Int = 0,
         linesearch::AbstractLineSearch = HagerZhangLineSearch(),
-        ls_maxiter::Int = 100, maxfuneval::Int = 50) =
+        ls_maxiter::Int = 50, maxfuneval::Int = 100) =
     LBFGS(m, maxiter, gradtol, acceptfirst, linesearch, verbosity, ls_maxiter, maxfuneval)
 
 function optimize(fg, x, alg::LBFGS;
