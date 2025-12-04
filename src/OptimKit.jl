@@ -16,6 +16,7 @@ const GRADTOL = ScopedValue(1e-8)
 const MAXITER = ScopedValue(1_000_000)
 const VERBOSITY = ScopedValue(1)
 const GROWFACTOR = ScopedValue(1.5)
+const INITIAL_STEP = ScopedValue(1.0)
 
 # Default values for the manifold structure
 _retract(x, d, α) = (add(x, d, α), d)
@@ -107,10 +108,10 @@ Also see [`GradientDescent`](@ref), [`ConjugateGradient`](@ref), [`LBFGS`](@ref)
 function optimize end
 
 function format_time(t::Float64)
-    if t < 1e-3
-        return @sprintf("%5.1f μs", 1e6*t)
+    if t < 1.0e-3
+        return @sprintf("%5.1f μs", 1.0e6 * t)
     elseif t < 1
-        return @sprintf("%5.1f ms", 1e3*t)
+        return @sprintf("%5.1f ms", 1.0e3 * t)
     elseif t < 60
         return @sprintf("%5.2f s", t)
     elseif t < 3600

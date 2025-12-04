@@ -39,6 +39,7 @@ struct LBFGS{T<:Real,L<:AbstractLineSearch} <: OptimizationAlgorithm
     linesearch::L
     scalestep::Bool
     growfactor::T
+    initial_step::T
 end
 function LBFGS(m::Int=8;
                acceptfirst::Bool=true,
@@ -53,9 +54,10 @@ function LBFGS(m::Int=8;
                                                                    maxfg=ls_maxfg,
                                                                    verbosity=ls_verbosity),
                scalestep::Bool=false,
-               growfactor::Real=GROWFACTOR[])
+               growfactor::Real=GROWFACTOR[],
+               initial_step::Real=INITIAL_STEP[])
     return LBFGS(m, maxiter, gradtol, acceptfirst, verbosity, linesearch, scalestep,
-                 growfactor)
+                 growfactor, initial_step)
 end
 
 function optimize(fg, x, alg::LBFGS;
@@ -88,7 +90,7 @@ function optimize(fg, x, alg::LBFGS;
         @info @sprintf("LBFGS: initializing with f = %.12e, ‖∇f‖ = %.4e", f, normgrad)
 
     # set optional step scaling
-    α00 = one(f)
+    α00 = alg.initial_step
     _scale_step(α) = alg.scalestep ? scale(α, alg.growfactor) : α00
     α0 = α00
 
